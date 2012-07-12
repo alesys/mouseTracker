@@ -50,14 +50,18 @@
 			// x y id name
 			console.log('onUpdate // id:' + data.id + " / x,y" + data.x + "/" +  data.y);
 			createMouse(data.id, {x:data.x, y:data.y});
+			/*
 			var divName = getName(data.id);
 			var css = {
 				"top": data.y + "px",
 				"left": data.x + "px" };
 			
-			//TweenLite.to($("#"+divName), 1, {css:css, ease:Power2.easeOut});
-			$('#'+divName).css(css);
+			TweenLite.to($("#"+divName), 1, {css:css, ease:Linear.easeNone});
+			*/
+			//$('#'+divName).css(css);
 			//console.log($(divName.html()));
+			var mouse = findMouse(data.id);
+			mouse.posArray.push(data);
 		}
 		function handleMouseMove(event)
 		{
@@ -82,6 +86,7 @@
 			{
 				if ( mouses[i].id == data.id)
 				{
+					clearInterval(mouses[i].interval);
 					mouses.splice(i,1);
 				}
 			}
@@ -101,12 +106,49 @@
 				var name = getName(id);
 				var html = "<div id='"+name+"' class='caja' style='top:"+y+"px;left:"+x+"px;background:"+randomColor()+";'></div>"; // 
 				$(html).appendTo("body");
-				var mouse = {
+				/*var mouse = {
 					name: name,
 					id: id
-				}
+				}*/
+				var mouse = new mouse(name,id);
 				mouses.push(mouse);
+
 			}
+		}
+
+		function mouse (name, id)
+		{
+			this.name 	= name;
+			this.id 	= id;
+			this.interval = setInterval("updateAnim('"+id+"')",100);
+			this.posArray = [];
+		}
+		function updateAnim(id)
+		{
+			var mouse = findMouse(id);
+			if ( mouse !== false)
+			{
+				var data = mouse.posArray.shift();
+				if ( data)
+				{
+					var divName = getName(data.id);
+
+					var css = {
+						"top": data.y + "px",
+						"left": data.x + "px" };
+					
+					TweenLite.to($("#"+divName), .1, {css:css, ease:Linear.easeNone});
+				}
+			}
+		}
+		function findMouse(id)
+		{
+			for ( var i in mouses)
+			{
+				if (mouses[i].id == id)
+					return mouses[i];
+			}
+			return false;
 		}
 		function existsMouse(id)
 		{
