@@ -31,7 +31,7 @@ function handleUpdate(data)
 	// {id, nombre, point{} }
 	var socket = this;
 	//io.sockets.emit('onUpdate', data);
-	io.sockets.volatile.emit('onUpdate', data);
+	io.sockets.emit('onUpdate', data);
 }
 
 function handleDisconnect()
@@ -45,7 +45,7 @@ function handleDisconnect()
 	});
 	console.log('client_id:'+_client_id);
 	
-	io.sockets.volatile.emit('clientDisconnected',
+	io.sockets.emit('clientDisconnected',
 		{
 			id: _client_id
 		});
