@@ -55,7 +55,8 @@
 				"top": data.y + "px",
 				"left": data.x + "px" };
 			
-			TweenLite.to($("#"+divName), 1, {css:css, ease:Power2.easeOut});
+			//TweenLite.to($("#"+divName), 1, {css:css, ease:Power2.easeOut});
+			$('#'+divName).css(css);
 			//console.log($(divName.html()));
 		}
 		function handleMouseMove(event)
