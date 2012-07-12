@@ -88,10 +88,11 @@
 		{
 			if ( !existsMouse(id))
 			{
+				console.log("createMouse");
 				var x = point.x;
 				var y = point.y;
 				var name = getName(id);
-				var html = "<div id='"+name+"' class='caja' style='top:"+y+"px;left:"+x+"px;'></div>"; // 
+				var html = "<div id='"+name+"' class='caja' style='top:"+y+"px;left:"+x+"px;color:"+randomColor()+";'></div>"; // 
 				$(html).appendTo("body");
 				var mouse = {
 					name: name,
@@ -108,7 +109,14 @@
 			}
 			return false;
 		}
-
+		function randomColor()
+		{
+			var hue = 'rgb('
+            + (Math.floor(Math.random() * 256)) + ','
+            + (Math.floor(Math.random() * 256)) + ','
+            + (Math.floor(Math.random() * 256)) + ')';
+			return hue;
+		}
 	</script>
 </head>
 <body>
