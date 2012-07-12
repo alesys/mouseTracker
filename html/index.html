@@ -39,6 +39,7 @@
 		}
 		function handleOnConnect(data)
 		{
+			console.log('onConnect');
 			console.log(data);
 			client_id = data.id;
 		}
@@ -47,6 +48,7 @@
 
 			
 			// x y id name
+			console.log('onUpdate // id:' + data.id + " / x,y" + "data.x" + "/" +  "data.y");
 			createMouse(data.id, {x:data.x, y:data.y});
 			var divName = getName(data.id);
 			var css = {
