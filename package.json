@@ -8,10 +8,9 @@
     "socket.io": "0.9.6",
     "express": "2.5.11"
   },
-  "devDependencies": {},
-  "main": "app",
   "engines": {
     "node": ">= 0.8.x"
+    "npm": ">= 1.1.x"
   },
   "scripts": {
     "start": "app.js"
