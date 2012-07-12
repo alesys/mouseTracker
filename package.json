@@ -5,12 +5,12 @@
   "author": "Rolf",
   "homepage": "http://alesys.net",
   "dependencies": {
-    "socket.io": "0.9.6",
-    "express": "2.5.11"
+    "socket.io": "0.9.x",
+    "express": "2.5.x"
   },
   "engines": {
-    "node": ">= 0.8.x"
-    "npm": ">= 1.1.x"
+    "node": "0.8.x"
+    "npm": "1.1.x"
   },
   "scripts": {
     "start": "app.js"
