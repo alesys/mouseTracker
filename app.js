@@ -1,7 +1,8 @@
 var app = require('express').createServer();
 var io  = require('socket.io').listen(app);
 var client_id = 0;
-app.listen(5000);
+var port = process.env.PORT || 5000;
+app.listen(port);
 
 app.get('/', handleExpress);
 io.sockets.on('connection', handleSocketConnect);
