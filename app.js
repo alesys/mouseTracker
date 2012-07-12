@@ -18,7 +18,7 @@ function handleSocketConnect(socket)
 {
 	console.log('socket conectado');
 	socket.set('client_id', client_id, function(){});
-	socket.volatile.emit('onConnect', {id: client_id++});
+	socket.emit('onConnect', {id: client_id++});
 
 	// Escuchar
 	socket.on('update', handleUpdate);
