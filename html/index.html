@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang='es'>
+<head>
+	<meta charset="utf-8">
+	<title>Mouse</title>
+	<style type="text/css">
+		.caja
+		{
+			background: red;
+			width: 10px;
+			height: 10px;
+			position: absolute;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script src="./socket.io/socket.io.js" type="text/javascript"></script>
+	<script type="text/javascript" src="https://www.greensock.com/js/src/TweenMax.min.js"></script>
+	<script type="text/javascript">
+		var socket, client_id;
+		var mouses = [];
+		$(document).ready( init );
+		function init ()
+		{
+			console.log('init');
+			// connect
+			socket = io.connect('http://strong-samurai-4031.herokuapp.com/'); // localhost
+			// Listen
+			socket.on('onConnect', handleOnConnect);
+			socket.on('onUpdate', handleOnUpdate);
+			socket.on('clientDisconnected', handleDisconnect)
+
+			// Listen al mouse
+			$(document).mousemove(handleMouseMove);
+		}
+		function handleOnConnect(data)
+		{
+			console.log(data);
+			client_id = data.id;
+		}
+		function handleOnUpdate(data)
+		{
+
+			
+			// x y id name
+			createMouse(data.id, {x:data.x, y:data.y});
+			var divName = getName(data.id);
+			var css = {
+				"top": data.y + "px",
+				"left": data.x + "px" };
+			
+			TweenLite.to($("#"+divName), 1, {css:css, ease:Power2.easeOut});
+			//console.log($(divName.html()));
+		}
+		function handleMouseMove(event)
+		{
+			// .pageX .pageY
+
+			var x = event.pageX;
+			var y = event.pageY;
+			if ( client_id != undefined)
+			{
+				var output = {x:x, y:y, name:'gg', id:client_id};
+				socket.emit('update',output);
+				console.log(output);
+			}
+		}
+		
+		function handleDisconnect(data)
+		{
+
+			var divName = "#"+getName(data.id);
+			$(divName).remove();
+			for ( var i=0; i<mouses.length; i++)
+			{
+				if ( mouses[i].id == data.id)
+				{
+					mouses.splice(i,1);
+				}
+			}
+		}
+		
+		function getName(id)
+		{
+			return "mouse"+id;
+		}
+		function createMouse (id, point)
+		{
+			if ( !existsMouse(id))
+			{
+				var x = point.x;
+				var y = point.y;
+				var name = getName(id);
+				var html = "<div id='"+name+"' class='caja' style='top:"+y+"px;left:"+x+"px;'></div>"; // 
+				$(html).appendTo("body");
+				var mouse = {
+					name: name,
+					id: id
+				}
+				mouses.push(mouse);
+			}
+		}
+		function existsMouse(id)
+		{
+			for ( var i in mouses)
+			{
+				if (mouses[i].id == id) return true;
+			}
+			return false;
+		}
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>
