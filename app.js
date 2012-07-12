@@ -18,7 +18,7 @@ function handleSocketConnect(socket)
 {
 	console.log('socket conectado');
 	socket.set('client_id', client_id, function(){});
-	socket.emit('onConnect', {id: client_id++});
+	socket.volatile.emit('onConnect', {id: client_id++});
 
 	// Escuchar
 	socket.on('update', handleUpdate);
@@ -30,7 +30,8 @@ function handleUpdate(data)
 	// data debe de tener
 	// {id, nombre, point{} }
 	var socket = this;
-	io.sockets.emit('onUpdate', data);
+	//io.sockets.emit('onUpdate', data);
+	io.sockets.volatile.emit('onUpdate', data);
 }
 
 function handleDisconnect()
@@ -44,7 +45,7 @@ function handleDisconnect()
 	});
 	console.log('client_id:'+_client_id);
 	
-	io.sockets.emit('clientDisconnected',
+	io.sockets.volatile.emit('clientDisconnected',
 		{
 			id: _client_id
 		});
