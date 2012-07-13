@@ -1,10 +1,10 @@
-learning-nodejs
+Mouse Tracker
 ===============
 
-Sample nodejs examples
+Author: Rolf Ruiz
+	alesys.net
+	r@alesys.net
+	@alesys_net
 
-# Mouse Tracket Test by Rolf Ruiz (Alesys.net)
-
-
-Simple mousetracker using socket.io and express to handle socket and http requests; jquery and TweenMax to make smoother animations.
+Simple mousetracker using socket.io and express to handle socket and http requests; Also used jQuery and TweenMax to make smoother animations.
 
