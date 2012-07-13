@@ -21,21 +21,19 @@
 	<script type="text/javascript" src="https://www.greensock.com/js/src/TweenMax.min.js"></script>
 	<script type="text/javascript">
 		var socket, client_id;
-		var mouses = [];
-		var msUpdate = 50;
+		var mouses 		= [];
+		var msUpdate 	= 50;
+		var color 		= randomColor();
 		$(document).ready( init );
 		function init ()
 		{
 			console.log('init');
-			// connect
-			//socket = io.connect('http://fierce-fire-2874.herokuapp.com/'); // localhost
 			socket = io.connect(window.location);
-			// Listen
+			// Listeners
 			socket.on('onConnect', handleOnConnect);
 			socket.on('onUpdate', handleOnUpdate);
 			socket.on('clientDisconnected', handleDisconnect)
 
-			// Listen al mouse
 			$(document).mousemove(handleMouseMove);
 		}
 		function handleOnConnect(data)
@@ -46,38 +44,22 @@
 		}
 		function handleOnUpdate(data)
 		{
-
-			
-			// x y id name
-			console.log('onUpdate // id:' + data.id + " / x,y" + data.x + "/" +  data.y);
-			createMouse(data.id, {x:data.x, y:data.y});
-			/*
-			var divName = getName(data.id);
-			var css = {
-				"top": data.y + "px",
-				"left": data.x + "px" };
-			
-			TweenLite.to($("#"+divName), 1, {css:css, ease:Linear.easeNone});
-			*/
-			//$('#'+divName).css(css);
-			//console.log($(divName.html()));
+			//console.log('onUpdate // id:' + data.id + " / x,y" + data.x + "/" +  data.y);
+			createMouse(data.id, {x:data.x, y:data.y}, data.color);
 			var mouse = findMouse(data.id);
 			mouse.posArray.push(data);
 		}
 		function handleMouseMove(event)
 		{
-			// .pageX .pageY
-
 			var x = event.pageX;
 			var y = event.pageY;
 			if ( client_id != undefined)
 			{
-				var output = {x:x, y:y, name:'gg', id:client_id};
+				var output = {x:x, y:y, name:getName(client_id), id:client_id, color:color };
 				socket.emit('update',output);
-				console.log(output);
+				//console.log(output);
 			}
 		}
-		
 		function handleDisconnect(data)
 		{
 
@@ -92,22 +74,19 @@
 				}
 			}
 		}
-		
 		function getName(id)
 		{
 			return "mouse"+id;
 		}
-
 		function Mouse (name, id)
 		{
-			console.log("function mouse()");
-			this.name 	= name;
-			this.id 	= id;
-			this.interval = setInterval("updateAnim('"+id+"')",msUpdate);
-			this.posArray = [];
+			console.log ("function mouse()");
+			this.name 		= name;
+			this.id 		= id;
+			this.interval 	= setInterval("updateAnim('"+id+"')",msUpdate);
+			this.posArray 	= [];
 		}
-
-		function createMouse (id, point)
+		function createMouse (id, point,color)
 		{
 			if ( !existsMouse(id))
 			{
@@ -115,20 +94,13 @@
 				var x = point.x;
 				var y = point.y;
 				var name = getName(id);
-				var html = "<div id='"+name+"' class='caja' style='top:"+y+"px;left:"+x+"px;background:"+randomColor()+";'></div>"; // 
+				var html = "<div id='"+name+"' class='caja' style='top:"+y+"px;left:"+x+"px;background:"+color+";'></div>"; 
 				$(html).appendTo("body");
-				/*var mouse = {
-					name: name,
-					id: id
-				}*/
 				var mouse = new Mouse(name,id);
 				mouses.push(mouse);
 
 			}
 		}
-
-
-
 		function updateAnim(id)
 		{
 			var mouse = findMouse(id);

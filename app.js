@@ -1,3 +1,13 @@
+/*
+	Simple mouse tracker
+	Author: Rolf Ruiz
+		alesys.net
+		r@alesys.net
+		@alesys_net
+	July 13, 2012
+*/
+
+
 var app = require('express').createServer();
 var io  = require('socket.io').listen(app);
 var client_id = 0;
@@ -9,28 +19,21 @@ io.sockets.on('connection', handleSocketConnect);
 
 function handleExpress(req, res)
 {
-	//console.log('req: '+ req);
-	//console.log('res: ' + res);
 	res.sendfile(__dirname + '/html/index.html');
 }
 
 function handleSocketConnect(socket)
 {
-	console.log('socket conectado');
+	console.log('new connection');
 	socket.set('client_id', client_id, function(){});
-	socket.emit('onConnect', {id: client_id++});
-
-	// Escuchar
+	socket.emit('onConnect', {id: client_id++});	
 	socket.on('update', handleUpdate);
 	socket.on('disconnect', handleDisconnect);
 }
 
 function handleUpdate(data)
 {
-	// data debe de tener
-	// {id, nombre, point{} }
-	var socket = this;
-	//io.sockets.emit('onUpdate', data);
+	var socket = this;	
 	io.sockets.emit('onUpdate', data);
 }
 
